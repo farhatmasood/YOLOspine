@@ -9,11 +9,11 @@
 [![PyTorch 2.0+](https://img.shields.io/badge/pytorch-2.0+-ee4c2c.svg)](https://pytorch.org)
 [![Dataset](https://img.shields.io/badge/Dataset-Mendeley-orange.svg)](https://data.mendeley.com/datasets/9j9hmy8kbn/1)
 
-**IEEE Transactions on Medical Imaging (TMI) 2026**
+<!-- **IEEE Transactions on Medical Imaging (TMI) 2026**
 
 [Rao Farhat Masood](https://orcid.org/0000-0001-9054-9192) · [Imtiaz Ahmad Taj](https://orcid.org/0000-0003-1813-5563)
 
-*Department of Electrical and Computer Engineering, Capital University of Science and Technology (CUST), Islamabad, Pakistan*
+*Department of Electrical and Computer Engineering, Capital University of Science and Technology (CUST), Islamabad, Pakistan* -->
 
 [**Paper**](#citation) · [**Dataset**](https://data.mendeley.com/datasets/9j9hmy8kbn/1) · [**Results**](#results)
 
