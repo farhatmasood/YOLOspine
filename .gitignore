@@ -1,0 +1,72 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# OS
+.DS_Store
+Thumbs.db
+
+# PyTorch
+*.pth
+*.pt
+*.onnx
+*.engine
+
+# Training outputs
+runs/
+wandb/
+outputs/
+checkpoints/
+
+# Data (should be downloaded separately)
+data/
+datasets/
+*.zip
+*.tar.gz
+
+# Logs
+*.log
+training_output*.log
+
+# Large files
+*.h5
+*.hdf5
+rf-detr-*.pth

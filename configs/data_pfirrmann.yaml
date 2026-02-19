@@ -1,0 +1,41 @@
+# Dataset configuration — 13-class segmentation with Pfirrmann grading
+#
+# Pfirrmann Grading Reference:
+#   Grade 1 — Normal disc, homogeneous, bright white
+#   Grade 2 — Inhomogeneous with horizontal band, white, normal height
+#   Grade 3 — Inhomogeneous, gray, normal to slightly decreased height
+#   Grade 4 — Inhomogeneous, gray to black, moderately decreased height
+#   Grade 5 — Inhomogeneous, black, collapsed disc space
+#
+# Disc Levels Graded:
+#   D5 — L5-S1 (lumbosacral junction)
+#   D4 — L4-L5
+#   D3 — L3-L4
+
+path: ./data
+train: images/train
+val: images/val
+test: images/test
+
+nc: 13
+
+names:
+  0: Background
+  1: Background_P
+  2: Outer_Bdry
+  3: VBs                   # Vertebral Bodies
+  4: IVDs                  # Intervertebral Discs
+  5: Sacrum
+  6: SC                    # Spinal Cavity
+  7: DDD                   # Degenerative Disc Disease
+  8: LDB                   # Lumbar Disc Bulge
+  9: Normal_IVD
+  10: SS                   # Spinal Stenosis
+  11: TDB                  # Thoracic Disc Bulge
+  12: Spondylolisthesis
+
+# IVD-related classes for Pfirrmann integration
+ivd_classes: [4, 9]
+
+# Path to per-patient Pfirrmann metadata (relative to dataset root)
+pfirrmann_metadata: pfirrmann_metadata.json

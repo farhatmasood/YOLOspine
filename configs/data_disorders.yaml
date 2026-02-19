@@ -1,0 +1,18 @@
+# Dataset configuration — 6-class disorder detection
+# Paths are relative to the dataset root.  Override `path` on the command line
+# or set it to the absolute location of your dataset.
+
+path: ./data           # dataset root directory
+train: images/train    # relative to `path`
+val: images/val
+test: images/test
+
+nc: 6
+
+names:
+  0: DDD                   # Degenerative Disc Disease
+  1: LDB                   # Lumbar Disc Bulge
+  2: Normal_IVD            # Normal Intervertebral Disc
+  3: SS                    # Spinal Stenosis
+  4: TDB                   # Thoracic Disc Bulge
+  5: Spondylolisthesis     # Vertebral slippage
