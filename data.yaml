@@ -1,0 +1,12 @@
+names:
+- Degenerative Disc Disease (DDD)
+- Normal IVD
+- Spinal Stenosis (SS)
+- Spondylolisthesis
+- Lumbar Disc Bulge (LDB)
+- Thoracic Disc Bulge (TDB)
+nc: 6
+path: .
+test: ./test/images
+train: ./train/images
+val: ./val/images

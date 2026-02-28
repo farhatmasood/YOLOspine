@@ -1,0 +1,204 @@
+# YOLOspine Architecture Description
+
+This document describes the updated YOLOspine architecture for spinal MRI object detection, designed to handle overlapping classes (e.g., spinal stenosis and disc bulge) and class imbalance. The model uses a two-stage hierarchical detection framework with multi-label classification, building on YOLO’s foundations.
+
+## Input
+- **Size**: 384x384x3 (RGB image)
+- **Annotation**: "Input: 384x384x3 (RGB)"
+
+## Backbone: GELAN + R-ELAN Hybrid
+The backbone extracts multi-scale features, combining GELAN (YOLOv9) and R-ELAN (YOLOv12) for efficiency and stability.
+
+1. **Conv2D**
+   - Size: 384x384x64
+   - Operation: Conv2D, 3x3 kernel, 64 filters, stride 1, padding 'same'
+   - Activation: SiLU
+   - Annotation: "Conv2D: 3x3, 64 filters, SiLU"
+
+2. **MaxPool**
+   - Size: 192x192x64
+   - Operation: 2x2 MaxPooling, stride 2
+   - Annotation: "MaxPool: 2x2"
+
+3. **C3 Block 1**
+   - Size: 192x192x128
+   - Operation: C3 module (Conv2D 1x1 → 3x3 → 1x1), skip connection
+   - Activation: SiLU
+   - Annotation: "C3 Block: 192x192x128, SiLU, Skip"
+
+4. **MaxPool**
+   - Size: 96x96x128
+   - Operation: 2x2 MaxPooling, stride 2
+   - Annotation: "MaxPool: 2x2"
+
+5. **C3 Block 2**
+   - Size: 96x96x256
+   - Operation: C3 module, skip connection
+   - Activation: SiLU
+   - Annotation: "C3 Block: 96x96x256, SiLU, Skip"
+
+6. **MaxPool (P3 Output)**
+   - Size: 48x48x256
+   - Operation: 2x2 MaxPooling, stride 2
+   - Annotation: "MaxPool: 48x48x256 (P3)"
+
+7. **R-ELAN Block**
+   - Size: 48x48x256
+   - Operation: R-ELAN (multiple Conv2D 3x3, residual connections)
+   - Activation: SiLU
+   - Annotation: "R-ELAN: 48x48x256, SiLU, Skip"
+
+8. **MaxPool**
+   - Size: 24x24x256
+   - Operation: 2x2 MaxPooling, stride 2
+   - Annotation: "MaxPool: 2x2"
+
+9. **R-ELAN Block (P4 Output)**
+   - Size: 24x24x512
+   - Operation: R-ELAN, residual connections
+   - Activation: SiLU
+   - Annotation: "R-ELAN: 24x24x512 (P4), SiLU, Skip"
+
+10. **MaxPool (P5 Output)**
+    - Size: 12x12x512
+    - Operation: 2x2 MaxPooling, stride 2
+    - Annotation: "MaxPool: 12x12x512 (P5)"
+
+**Connections**:
+- Sequential flow: Input → Conv2D → MaxPool → C3 Block 1 → MaxPool → C3 Block 2 → MaxPool (P3) → R-ELAN → MaxPool → R-ELAN (P4) → MaxPool (P5).
+- Skip connections: Within C3 and R-ELAN blocks (dotted arrows).
+
+## Neck: FPN with R-ELAN + Area Attention
+The neck aggregates features from backbone outputs P3, P4, and P5, refining them for detection.
+
+1. **P5 Processing**
+   - Size: 12x12x512
+   - Operation: Conv2D, 3x3 kernel, 512 filters, stride 1
+   - Activation: SiLU
+   - Annotation: "P5: 12x12x512, Conv2D, SiLU"
+
+2. **Upsample**
+   - Size: 24x24x512
+   - Operation: Upsampling (nearest neighbor)
+   - Annotation: "Upsample: 24x24x512"
+
+3. **Lateral Connection from P4**
+   - Size: 24x24x512
+   - Operation: Conv2D, 1x1 kernel, 512 filters
+   - Annotation: "P4: 24x24x512"
+
+4. **Concatenation**
+   - Size: 24x24x1024 (512 + 512)
+   - Operation: Concatenate Upsample and P4
+   - Annotation: "Concat: 24x24x1024"
+
+5. **R-ELAN Block**
+   - Size: 24x24x256
+   - Operation: R-ELAN, reduce channels
+   - Activation: SiLU
+   - Annotation: "R-ELAN: 24x24x256, SiLU, Skip"
+
+6. **Area Attention (A2)**
+   - Size: 24x24x256
+   - Operation: Area Attention (FlashAttention)
+   - Annotation: "A2: 24x24x256"
+   - Output: P4' (24x24x256, stride 16)
+
+7. **Upsample**
+   - Size: 48x48x256
+   - Operation: Upsampling
+   - Annotation: "Upsample: 48x48x256"
+
+8. **Lateral Connection from P3**
+   - Size: 48x48x256
+   - Operation: Conv2D, 1x1 kernel, 256 filters
+   - Annotation: "P3: 48x48x256"
+
+9. **Concatenation**
+   - Size: 48x48x512 (256 + 256)
+   - Operation: Concatenate Upsample and P3
+   - Annotation: "Concat: 48x48x512"
+
+10. **R-ELAN Block**
+    - Size: 48x48x256
+    - Operation: R-ELAN, reduce channels
+    - Activation: SiLU
+    - Annotation: "R-ELAN: 48x48x256, SiLU, Skip"
+
+11. **Area Attention (A2)**
+    - Size: 48x48x256
+    - Operation: Area Attention
+    - Annotation: "A2: 48x48x256"
+    - Output: P3' (48x48x256, stride 8)
+
+12. **Downsample for P5'**
+    - Size: 12x12x512
+    - Operation: Conv2D, 3x3 kernel, stride 2
+    - Activation: SiLU
+    - Annotation: "Downsample: 12x12x512, SiLU"
+    - Output: P5' (12x12x512, stride 32)
+
+**Connections**:
+- Sequential flow: P5 → Upsample → Concat (with P4) → R-ELAN → A2 (P4') → Upsample → Concat (with P3) → R-ELAN → A2 (P3').
+- Lateral connections: Dotted arrows from Backbone P4 and P3 to Concatenation layers.
+- Downsample: P4' → P5'.
+
+## Head: Two-Stage Hierarchical Detection Heads
+The detection head is split into two stages to handle non-overlapping and overlapping pathologies.
+
+### Stage 1 Head: Non-Overlapping Pathologies
+- **Purpose**: Detect vertebrae and non-overlapping pathologies (e.g., Normal IVD, isolated DDD).
+- **Inputs**: P3' (48x48x256), P4' (24x24x256), P5' (12x12x512)
+- **Structure**:
+  - **Classification Branch**: Conv2D, 1x1 kernel, \( C_1 \) filters (e.g., \( C_1 = 2 \) for Normal IVD, isolated DDD), softmax activation.
+  - **Regression Branch**: Conv2D, 1x1 kernel, 5 filters (x, y, w, h, objectness), no activation.
+- **Output Sizes**:
+  - 48x48x(\( C_1 + 5 \)), 24x24x(\( C_1 + 5 \)), 12x12x(\( C_1 + 5 \))
+- **Loss Function**:
+  - Classification: Weighted Cross-Entropy or Focal Loss (from your current setup).
+  - Regression: Smooth L1.
+  - Total: \( \mathcal{L}_{\text{Stage1}} = \mathcal{L}_{\text{cls}} + \lambda \cdot \mathcal{L}_{\text{reg}}, \lambda = 1.0 \).
+
+### Stage 2 Head: Overlapping Pathologies
+- **Purpose**: Refine predictions for overlapping classes (e.g., SS, LDB, Spondylolisthesis) within Stage 1 detected regions.
+- **Inputs**: RoI features from Stage 1 positive boxes, extracted via RoIAlign from neck outputs (P3', P4', P5').
+- **RoIAlign**:
+  - Operation: Extract fixed-size feature maps (e.g., 7x7x256) from Stage 1 bounding boxes.
+  - Annotation: "RoIAlign: 7x7x256"
+- **Structure**:
+  - **Classification Branch**: Conv2D, 1x1 kernel, \( C_2 \) filters (e.g., \( C_2 = 4 \) for SS, LDB, TDB, Spondylolisthesis), sigmoid activation.
+  - **Regression Branch**: Conv2D, 1x1 kernel, 5 filters, no activation.
+- **Output Sizes**: \( N_2 \times (C_2 + 5) \), where \( N_2 \) is the number of refined boxes.
+- **Loss Function**:
+  - Classification: Weighted Binary Cross-Entropy (WBCE):
+    \[
+    \mathcal{L}_{\text{WBCE}} = -\frac{1}{N_2} \sum_{i=1}^{N_2} \sum_{k=1}^{C_2} w_k \cdot \left( y_{ik} \log(\hat{p}_{ik}) + (1 - y_{ik}) \log(1 - \hat{p}_{ik}) \right),
+    \]
+    where \( w_k = 1 / n_k \), and \( n_k \) is the class frequency.
+  - Regression: Smooth L1.
+  - Total: \( \mathcal{L}_{\text{Stage2}} = \mathcal{L}_{\text{WBCE}} + \lambda \cdot \mathcal{L}_{\text{reg}}, \lambda = 1.0 \).
+
+**Connections**:
+- Stage 1: Solid arrows from P3', P4', P5' to respective heads.
+- Stage 2: Dotted arrow from Stage 1 positive boxes to RoIAlign, then solid arrows to classification and regression branches.
+
+## Post-Processing: Soft-NMS
+- **Operation**: Penalize overlapping boxes based on IoU, preserving co-occurring pathologies:
+  \[
+  s_i \leftarrow s_i \cdot e^{-\text{IoU}(b_i, b_j)^2 / \sigma}, \quad \text{if class } i = \text{class } j,
+  \]
+  where \( \sigma = 0.5 \).
+- **Annotation**: "Soft-NMS: Preserve co-pathologies"
+
+## Training Strategy
+- **Phase 1**: Train backbone + Stage 1 head on non-overlapping pathologies using weighted cross-entropy or Focal Loss.
+- **Phase 2**: Fine-tune backbone + Stage 2 head on overlapping pathologies using WBCE, with Stage 1 detections as input.
+
+## Diagram Layout
+- **Vertical Flow**:
+  - Top: Input → Backbone (stacked layers).
+  - Middle: Neck (FPN with lateral connections).
+  - Bottom: Stage 1 Heads (3 scales) → RoIAlign → Stage 2 Heads.
+- **Connections**:
+  - Solid arrows: Sequential flow.
+  - Dotted arrows: Skip connections (C3, R-ELAN), lateral connections (neck), Stage 1 to Stage 2.

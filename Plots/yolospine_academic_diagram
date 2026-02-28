@@ -1,0 +1,96 @@
+// YOLOspine Cascaded Architecture
+digraph YOLOspine {
+	bgcolor=white fontname=Arial rankdir=TB splines=ortho
+	graph [fontsize=10 height=11.69 margin=0.2 nodesep=0.2 ranksep=0.3 width=8.27]
+	node [fontname=Arial fontsize=10 shape=box style="filled,rounded"]
+	edge [arrowhead=vee arrowsize=0.8 fontname=Arial fontsize=10]
+	Input [label="Input
+384x384x3 (RGB)" fillcolor=lightblue]
+	Conv1 [label="Conv2D
+3x3, 64 filters, SiLU" fillcolor=lightcyan]
+	Pool1 [label="MaxPool
+2x2" fillcolor=lightcyan]
+	C3_1 [label="C3 Block
+192x192x128, SiLU, Skip" fillcolor=lightcyan]
+	Pool2 [label="MaxPool
+2x2" fillcolor=lightcyan]
+	C3_2 [label="C3 Block
+96x96x256, SiLU, Skip" fillcolor=lightcyan]
+	Pool3_P3 [label="MaxPool
+48x48x256 (P3)" color=forestgreen fillcolor=palegreen penwidth=2]
+	RELAN1 [label="R-ELAN
+48x48x256, SiLU, Skip" fillcolor=lightcyan]
+	Pool4 [label="MaxPool
+2x2" fillcolor=lightcyan]
+	RELAN2_P4 [label="R-ELAN
+24x24x512 (P4), SiLU, Skip" color=forestgreen fillcolor=palegreen penwidth=2]
+	Pool5_P5 [label="MaxPool
+12x12x512 (P5)" color=forestgreen fillcolor=palegreen penwidth=2]
+	P5_conv [label="P5
+12x12x512, Conv2D, SiLU" fillcolor=lavender]
+	Upsample1 [label="Upsample
+24x24x512" fillcolor=lavender]
+	P4_lat [label="P4
+24x24x512" fillcolor=lavender]
+	Concat1 [label="Concat
+24x24x1024" fillcolor=lavender]
+	RELAN_neck1 [label="R-ELAN
+24x24x256, SiLU, Skip" fillcolor=lavender]
+	A2_1 [label="A2
+24x24x256 (P4')" color=forestgreen fillcolor=palegreen penwidth=2]
+	Upsample2 [label="Upsample
+48x48x256" fillcolor=lavender]
+	P3_lat [label="P3
+48x48x256" fillcolor=lavender]
+	Concat2 [label="Concat
+48x48x512" fillcolor=lavender]
+	RELAN_neck2 [label="R-ELAN
+48x48x256, SiLU, Skip" fillcolor=lavender]
+	A2_2 [label="A2
+48x48x256 (P3')" color=forestgreen fillcolor=palegreen penwidth=2]
+	Downsample [label="Downsample
+12x12x512 (P5')" color=forestgreen fillcolor=palegreen penwidth=2]
+	DDE_P3 [label="DDE P3
+Softmax Cls + Reg" fillcolor=lightgreen]
+	DDE_P4 [label="DDE P4
+Softmax Cls + Reg" fillcolor=lightgreen]
+	DDE_P5 [label="DDE P5
+Softmax Cls + Reg" fillcolor=lightgreen]
+	ROI [label="RoIAlign
+7x7x256" fillcolor=khaki]
+	MLDR_out [label="MLDR
+Sigmoid Cls + Reg" fillcolor=khaki]
+	SoftNMS [label="Soft-NMS" color=sienna fillcolor=peachpuff]
+	Input -> Conv1
+	Conv1 -> Pool1
+	Pool1 -> C3_1
+	C3_1 -> Pool2
+	Pool2 -> C3_2
+	C3_2 -> Pool3_P3
+	Pool3_P3 -> RELAN1
+	RELAN1 -> Pool4
+	Pool4 -> RELAN2_P4
+	RELAN2_P4 -> Pool5_P5
+	Pool5_P5 -> P5_conv
+	P5_conv -> Upsample1
+	Upsample1 -> Concat1
+	RELAN2_P4 -> P4_lat
+	P4_lat -> Concat1
+	Concat1 -> RELAN_neck1
+	RELAN_neck1 -> A2_1
+	A2_1 -> Upsample2
+	Upsample2 -> Concat2
+	Pool3_P3 -> P3_lat
+	P3_lat -> Concat2
+	Concat2 -> RELAN_neck2
+	RELAN_neck2 -> A2_2
+	A2_1 -> Downsample
+	A2_2 -> DDE_P3
+	A2_1 -> DDE_P4
+	Downsample -> DDE_P5
+	DDE_P3 -> ROI
+	DDE_P4 -> ROI
+	DDE_P5 -> ROI
+	ROI -> MLDR_out
+	MLDR_out -> SoftNMS
+}

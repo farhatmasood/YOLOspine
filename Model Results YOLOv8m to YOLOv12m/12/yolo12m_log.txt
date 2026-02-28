@@ -1,0 +1,98 @@
+Training (726 images) Set Summary (Instances per class):
+----------------------------------------
+Normal IVD                : 2902
+Degenerative Disc Disease (DDD) : 432
+Spinal Stenosis (SS)      : 1319
+Lumbar Disc Bulge (LDB)   : 1416
+Spondylolisthesis         : 85
+Thoracic Disc Bulge (TDB) : 103
+Total                     : 6257
+----------------------------------------
+
+Validation (207 images) Set Summary (Instances per class):
+----------------------------------------
+Normal IVD                : 815
+Lumbar Disc Bulge (LDB)   : 417
+Spinal Stenosis (SS)      : 407
+Spondylolisthesis         : 20
+Degenerative Disc Disease (DDD) : 128
+Thoracic Disc Bulge (TDB) : 25
+Total                     : 1812
+----------------------------------------
+
+Test (105 Images) Set Summary (Instances per class):
+----------------------------------------
+Degenerative Disc Disease (DDD) : 73
+Normal IVD                : 414
+Spinal Stenosis (SS)      : 195
+Lumbar Disc Bulge (LDB)   : 200
+Thoracic Disc Bulge (TDB) : 23
+Spondylolisthesis         : 17
+Total                     : 922
+----------------------------------------
+
+
+
+
+Total Training Time: 3391.40 seconds
+Average Time per Epoch: 16.96 seconds
+
+
+Training Confusion Matrix:
+--------------------------------------------------
+                                 Degenerative Disc Disease (DDD)  Normal IVD  Spinal Stenosis (SS)  Spondylolisthesis  Lumbar Disc Bulge (LDB)  Thoracic Disc Bulge (TDB)
+Degenerative Disc Disease (DDD)                            372.0         1.0                   0.0                0.0                      2.0                        1.0
+Normal IVD                                                   2.0      2869.0                   0.0                0.0                      1.0                        1.0
+Spinal Stenosis (SS)                                         0.0         0.0                1253.0                0.0                      0.0                        0.0
+Spondylolisthesis                                            0.0         0.0                   0.0               85.0                      0.0                        0.0
+Lumbar Disc Bulge (LDB)                                     13.0         5.0                   0.0                0.0                   1377.0                        0.0
+Thoracic Disc Bulge (TDB)                                    5.0         1.0                   0.0                0.0                      0.0                       98.0
+
+
+Validation Confusion Matrix:
+--------------------------------------------------
+                                 Degenerative Disc Disease (DDD)  Normal IVD  Spinal Stenosis (SS)  Spondylolisthesis  Lumbar Disc Bulge (LDB)  Thoracic Disc Bulge (TDB)
+Degenerative Disc Disease (DDD)                             70.0        15.0                   0.0                0.0                     12.0                        2.0
+Normal IVD                                                  15.0       754.0                   0.0                0.0                     36.0                        2.0
+Spinal Stenosis (SS)                                         0.0         0.0                 332.0                0.0                      0.0                        0.0
+Spondylolisthesis                                            0.0         0.0                   0.0                8.0                      0.0                        0.0
+Lumbar Disc Bulge (LDB)                                     23.0        35.0                   0.0                1.0                    352.0                        0.0
+Thoracic Disc Bulge (TDB)                                    4.0         2.0                   0.0                0.0                      2.0                       19.0
+
+
+Evaluating on Test Set...
+Test Inference Time: 41.78 seconds
+
+Testing Confusion Matrix:
+--------------------------------------------------
+                                 Degenerative Disc Disease (DDD)  Normal IVD  Spinal Stenosis (SS)  Spondylolisthesis  Lumbar Disc Bulge (LDB)  Thoracic Disc Bulge (TDB)
+Degenerative Disc Disease (DDD)                             36.0         9.0                   0.0                0.0                      4.0                        2.0
+Normal IVD                                                  13.0       369.0                   0.0                0.0                     18.0                        5.0
+Spinal Stenosis (SS)                                         0.0         0.0                 154.0                0.0                      0.0                        0.0
+Spondylolisthesis                                            0.0         0.0                   0.0               11.0                      2.0                        0.0
+Lumbar Disc Bulge (LDB)                                     18.0        23.0                   0.0                0.0                    169.0                        0.0
+Thoracic Disc Bulge (TDB)                                    2.0         1.0                   0.0                0.0                      0.0                       14.0
+
+AUC for class 0 (Degenerative Disc Disease (DDD)): 0.5967
+AUC for class 1 (Normal IVD): 0.7733
+AUC for class 2 (Spinal Stenosis (SS)): 0.4235
+AUC for class 3 (Spondylolisthesis): 0.4914
+AUC for class 4 (Lumbar Disc Bulge (LDB)): 0.4157
+AUC for class 5 (Thoracic Disc Bulge (TDB)): 0.4888
+
+
+Test Metrics Preview:
+                             Class  Precision    Recall     mAP50  mAP50-95   Jaccard       AUC
+0  Degenerative Disc Disease (DDD)   0.696732  0.575342  0.668739  0.450834  0.146909  0.596660
+1                       Normal IVD   0.866312  0.905797  0.896912  0.633860  0.146909  0.773301
+2             Spinal Stenosis (SS)   0.675306  0.738462  0.688227  0.285222  0.146909  0.423541
+3                Spondylolisthesis   0.686204  0.647059  0.680733  0.511160  0.146909  0.491423
+4          Lumbar Disc Bulge (LDB)   0.795076  0.895000  0.860978  0.598066  0.146909  0.415656
+5        Thoracic Disc Bulge (TDB)   0.769521  0.726251  0.735071  0.531851  0.146909  0.488832
+
+
+Additional Metrics:
+Overall AUC: 0.5316
+Average Jaccard Index: 0.1469
+
+

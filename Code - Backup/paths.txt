@@ -1,0 +1,9 @@
+"D:\2.3 Code_s\YOLOspine-2May25\test\images"
+"D:\2.3 Code_s\YOLOspine-2May25\train\images"
+"D:\2.3 Code_s\YOLOspine-2May25\val\images"
+
+"D:\2.3 Code_s\YOLOspine-2May25\test\labels"
+"D:\2.3 Code_s\YOLOspine-2May25\train\labels"
+"D:\2.3 Code_s\YOLOspine-2May25\val\labels"
+
+D:\2.3 Code_s\YOLOspine-2May25\data.yaml

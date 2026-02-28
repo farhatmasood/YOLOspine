@@ -1,0 +1,8 @@
+,Degenerative Disc Disease (DDD),Normal IVD,Spinal Stenosis (SS),Spondylolisthesis,Lumbar Disc Bulge (LDB),Thoracic Disc Bulge (TDB),background
+Degenerative Disc Disease (DDD),372,1,0,0,2,1,29
+Normal IVD,2,2869,0,0,1,1,77
+Spinal Stenosis (SS),0,0,1253,0,0,0,317
+Spondylolisthesis,0,0,0,85,0,0,8
+Lumbar Disc Bulge (LDB),13,5,0,0,1377,0,47
+Thoracic Disc Bulge (TDB),5,1,0,0,0,98,9
+background,40,26,66,36,36,3,0

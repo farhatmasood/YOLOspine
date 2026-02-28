@@ -1,0 +1,87 @@
+// YOLOspine Architecture (Style3 Compressed)
+digraph {
+	bgcolor=white fontname=Arial nodesep=0.15 rankdir=LR ranksep=0.25 size="8.27,3.9" splines=ortho
+	fontname="Arial Bold" fontsize=18 label="YOLOspine: Two-Stage Detection Framework for Spinal Pathologies"
+	Input [label="Input: 384×384×3 (RGB)" fillcolor=lightblue fontsize=12 shape=box style="filled,rounded"]
+	B1 [label="Conv 3×3, 64
+384×384×64" fillcolor=lightcyan fontsize=12 shape=box style="filled,rounded"]
+	B2 [label="MaxPool 2×2
+192×192×64" fillcolor=lightcyan fontsize=12 shape=box style="filled,rounded"]
+	B3 [label="C3 192×192×128
+SiLU, Skip" fillcolor=lightcyan fontsize=12 shape=box style="filled,rounded"]
+	B4 [label="MaxPool 2×2
+96×96×128" fillcolor=lightcyan fontsize=12 shape=box style="filled,rounded"]
+	B5 [label="C3 96×96×256
+SiLU, Skip" fillcolor=lightcyan fontsize=12 shape=box style="filled,rounded"]
+	B6 [label="MaxPool 2×2
+48×48×256 (P3)" color=forestgreen fillcolor=palegreen fontsize=12 shape=box style="filled,rounded"]
+	B7 [label="R-ELAN
+48×48×256" fillcolor=lightcyan fontsize=12 shape=box style="filled,rounded"]
+	B8 [label="MaxPool 2×2
+24×24×256" fillcolor=lightcyan fontsize=12 shape=box style="filled,rounded"]
+	B9 [label="R-ELAN
+24×24×512 (P4)" color=forestgreen fillcolor=palegreen fontsize=12 shape=box style="filled,rounded"]
+	B10 [label="MaxPool 2×2
+12×12×512 (P5)" color=forestgreen fillcolor=palegreen fontsize=12 shape=box style="filled,rounded"]
+	N1 [label="P5 Conv 3×3
+12×12×512" fillcolor=lavender fontsize=12 shape=box style="filled,rounded"]
+	N2 [label="Upsample
+24×24×512" fillcolor=lavender fontsize=12 shape=box style="filled,rounded"]
+	N3 [label="Concat P4
+24×24×1024" fillcolor=lavender fontsize=12 shape=box style="filled,rounded"]
+	N4 [label="R-ELAN
+24×24×256" fillcolor=lavender fontsize=12 shape=box style="filled,rounded"]
+	N5 [label="A2 Attention
+24×24×256 (P4')" fillcolor=palegreen fontsize=12 shape=box style="filled,rounded"]
+	N6 [label="Upsample
+48×48×256" fillcolor=lavender fontsize=12 shape=box style="filled,rounded"]
+	N7 [label="Concat P3
+48×48×512" fillcolor=lavender fontsize=12 shape=box style="filled,rounded"]
+	N8 [label="R-ELAN
+48×48×256" fillcolor=lavender fontsize=12 shape=box style="filled,rounded"]
+	N9 [label="A2 Attention
+48×48×256 (P3')" fillcolor=palegreen fontsize=12 shape=box style="filled,rounded"]
+	N10 [label="Downsample
+12×12×512 (P5')" fillcolor=palegreen fontsize=12 shape=box style="filled,rounded"]
+	S1A [label="P3' Head
+48×48×(C1+5)" fillcolor=lightgreen fontsize=12 shape=box style="filled,rounded"]
+	S1B [label="P4' Head
+24×24×(C1+5)" fillcolor=lightgreen fontsize=12 shape=box style="filled,rounded"]
+	S1C [label="P5' Head
+12×12×(C1+5)" fillcolor=lightgreen fontsize=12 shape=box style="filled,rounded"]
+	S2A [label="RoIAlign
+7×7×256" fillcolor=khaki fontsize=12 shape=box style="filled,rounded"]
+	S2B [label="Cls: Sigmoid
+Reg: 5
+N2 × (C2+5)" fillcolor=khaki fontsize=12 shape=box style="filled,rounded"]
+	PP [label="Soft-NMS
+Preserve Pathologies" color=sienna fillcolor=peachpuff fontsize=12 shape=box style="filled,rounded"]
+	Input -> B1 [color=darkblue penwidth=2]
+	B1 -> B2 [color=darkblue penwidth=2]
+	B2 -> B3 [color=darkblue penwidth=2]
+	B3 -> B4 [color=darkblue penwidth=2]
+	B4 -> B5 [color=darkblue penwidth=2]
+	B5 -> B6 [color=darkblue penwidth=2]
+	B6 -> B7 [color=darkblue penwidth=2]
+	B7 -> B8 [color=darkblue penwidth=2]
+	B8 -> B9 [color=darkblue penwidth=2]
+	B9 -> B10 [color=darkblue penwidth=2]
+	B10 -> N1 [color=darkblue penwidth=2]
+	N1 -> N2 [color=darkblue penwidth=2]
+	N2 -> N3 [color=darkblue penwidth=2]
+	N3 -> N4 [color=darkblue penwidth=2]
+	N4 -> N5 [color=darkblue penwidth=2]
+	N5 -> N6 [color=darkblue penwidth=2]
+	N6 -> N7 [color=darkblue penwidth=2]
+	N7 -> N8 [color=darkblue penwidth=2]
+	N8 -> N9 [color=darkblue penwidth=2]
+	N5 -> N10 [color=darkblue penwidth=2 style=dashed]
+	N9 -> S1A [color=darkblue penwidth=2]
+	N5 -> S1B [color=darkblue penwidth=2]
+	N10 -> S1C [color=darkblue penwidth=2]
+	S1A -> S2A [color=darkblue penwidth=2 style=dashed]
+	S1B -> S2A [color=darkblue penwidth=2 style=dashed]
+	S1C -> S2A [color=darkblue penwidth=2 style=dashed]
+	S2A -> S2B [color=darkblue penwidth=2]
+	S2B -> PP [color=darkblue penwidth=2]
+}
