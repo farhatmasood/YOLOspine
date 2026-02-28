@@ -570,6 +570,26 @@ from yolospine.utils.pfirrmann import get_pfirrmann_grade
 
 ---
 
+## Demo Application
+
+An interactive **Streamlit** dashboard (`app/`) is included for clinical
+inference, GradCAM-based interpretability, robustness evaluation, batch
+processing, and research analytics — all without writing code.
+
+```bash
+# Install app-specific dependencies
+pip install -r app/requirements.txt
+
+# Launch the dashboard
+streamlit run app/app.py
+```
+
+Place trained weights (`.pt` / `.pth`) in `app/weights/` and optional
+per-model metrics CSVs in `app/metrics/`.  See [`app/README.md`](app/README.md)
+for supported architectures, environment variables, and full usage details.
+
+---
+
 ## Experimental Configuration
 
 | Parameter | Value |

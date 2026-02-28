@@ -1,0 +1,7 @@
+# SpineScan AI — Application Dependencies
+# Install alongside the base YOLOspine requirements:
+#   pip install -r requirements.txt   (from repo root)
+#   pip install -r app/requirements.txt
+
+streamlit>=1.30.0
+plotly>=5.18.0

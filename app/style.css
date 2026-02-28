@@ -1,0 +1,416 @@
+/* ==========================================================================
+   SpineScan AI - Academic Dark Theme
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+    --primary: #6366f1;
+    --primary-light: #818cf8;
+    --primary-dark: #4f46e5;
+    --accent: #a855f7;
+    --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: #3b82f6;
+
+    --bg-900: #0a0e1a;
+    --bg-800: #0f172a;
+    --bg-700: #1e293b;
+    --bg-600: #334155;
+    --bg-500: #475569;
+
+    --text-100: #f8fafc;
+    --text-200: #e2e8f0;
+    --text-300: #cbd5e1;
+    --text-400: #94a3b8;
+    --text-500: #64748b;
+
+    --glass-bg: rgba(15, 23, 42, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.06);
+    --glass-hover: rgba(99, 102, 241, 0.12);
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.15);
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   Global
+   ========================================================================== */
+.stApp {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-200);
+    background: var(--bg-900);
+    background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(99, 102, 241, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(168, 85, 247, 0.04) 0%, transparent 50%);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-100) !important;
+    letter-spacing: -0.02em;
+}
+
+/* Hide chrome */
+#MainMenu, footer, header, .stDeployButton { visibility: hidden !important; display: none !important; }
+div[data-testid="stToolbar"] { display: none !important; }
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+.main-header {
+    text-align: center;
+    padding: 2.5rem 1rem 1.5rem;
+    margin-bottom: 1rem;
+    background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.12) 0%, transparent 65%);
+    position: relative;
+}
+.main-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.3), transparent);
+}
+.main-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin: 0;
+    background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.04em;
+}
+.subtitle {
+    font-size: 1rem;
+    color: var(--text-400);
+    margin-top: 0.4rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* ==========================================================================
+   Sidebar
+   ========================================================================== */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, var(--bg-800) 0%, var(--bg-900) 100%) !important;
+    border-right: 1px solid var(--glass-border) !important;
+}
+[data-testid="stSidebar"] .stMarkdown { color: var(--text-400); }
+
+.sidebar-brand {
+    text-align: center;
+    padding: 1.5rem 0 1rem;
+    border-bottom: 1px solid var(--glass-border);
+    margin-bottom: 1rem;
+}
+.sidebar-brand .icon { font-size: 2.5rem; filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.5)); }
+.sidebar-brand h3 { margin: 0.3rem 0 0; font-weight: 700; font-size: 1.2rem; color: var(--text-100); }
+.sidebar-brand .version {
+    font-size: 0.7rem; color: var(--text-500); letter-spacing: 0.12em;
+    text-transform: uppercase; margin-top: 2px;
+}
+
+.device-badge {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.65rem 0.8rem; border-radius: var(--radius-md);
+    background: rgba(0, 0, 0, 0.25); border: 1px solid var(--glass-border);
+    margin-top: 0.5rem;
+}
+.device-badge .indicator {
+    width: 8px; height: 8px; border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+.device-badge .indicator.gpu { background: var(--success); box-shadow: 0 0 8px var(--success); }
+.device-badge .indicator.cpu { background: var(--warning); box-shadow: 0 0 8px var(--warning); }
+@keyframes pulse {
+    0%, 100% { opacity: 1; } 50% { opacity: 0.5; }
+}
+
+/* ==========================================================================
+   Glass Cards
+   ========================================================================== */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    margin-bottom: 1rem;
+}
+.glass-card:hover {
+    border-color: rgba(99, 102, 241, 0.2);
+    box-shadow: var(--shadow), var(--shadow-glow);
+}
+
+.info-banner {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(99, 102, 241, 0.08));
+    border: 1px solid rgba(59, 130, 246, 0.15);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    font-size: 0.88rem;
+    color: var(--text-300);
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   Metrics
+   ========================================================================== */
+[data-testid="stMetricValue"] {
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 1.8rem !important;
+    font-weight: 600 !important;
+    background: var(--accent-gradient) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+[data-testid="stMetricLabel"] {
+    font-size: 0.78rem !important;
+    color: var(--text-400) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 500 !important;
+}
+[data-testid="stMetricDelta"] { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
+
+/* ==========================================================================
+   Tabs
+   ========================================================================== */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 6px;
+    background: rgba(15, 23, 42, 0.6);
+    padding: 6px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--glass-border);
+}
+.stTabs [data-baseweb="tab"] {
+    height: 2.8rem;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--text-400);
+    border: none;
+    font-weight: 500;
+    font-size: 0.88rem;
+    transition: var(--transition);
+    padding: 0 1.2rem;
+}
+.stTabs [data-baseweb="tab"]:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-200);
+}
+.stTabs [aria-selected="true"] {
+    background: linear-gradient(135deg, var(--primary), var(--accent)) !important;
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.stButton > button {
+    background: var(--bg-600) !important;
+    color: var(--text-100) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    font-size: 0.88rem;
+    transition: var(--transition);
+}
+.stButton > button:hover {
+    border-color: var(--primary) !important;
+    background: rgba(99, 102, 241, 0.12) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+.stButton > button[kind="primary"],
+.stButton > button[data-testid="stBaseButton-primary"] {
+    background: linear-gradient(135deg, var(--primary), var(--accent)) !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+.stButton > button[kind="primary"]:hover,
+.stButton > button[data-testid="stBaseButton-primary"]:hover {
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Detection Cards
+   ========================================================================== */
+.det-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--glass-border);
+    border-left: 4px solid var(--primary);
+    margin-bottom: 0.5rem;
+    transition: var(--transition);
+}
+.det-card:hover { background: rgba(255, 255, 255, 0.04); }
+.det-card.severity-high { border-left-color: var(--danger); }
+.det-card.severity-med  { border-left-color: var(--warning); }
+.det-card.severity-low  { border-left-color: var(--success); }
+
+.det-card .name {
+    font-weight: 600; font-size: 0.95rem; color: var(--text-100);
+}
+.det-card .meta {
+    font-size: 0.78rem; color: var(--text-400); margin-top: 2px;
+}
+.det-badge {
+    padding: 0.2rem 0.65rem; border-radius: 999px; font-size: 0.72rem;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.det-badge.high { background: rgba(239, 68, 68, 0.15); color: #fca5a5; }
+.det-badge.med  { background: rgba(245, 158, 11, 0.15); color: #fcd34d; }
+.det-badge.low  { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
+
+/* ==========================================================================
+   Report
+   ========================================================================== */
+.clinical-report {
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+}
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--bg-500);
+    padding-bottom: 1rem;
+    margin-bottom: 1.25rem;
+}
+.report-finding {
+    margin-bottom: 0.75rem;
+    padding: 0.75rem;
+    border-left: 3px solid var(--primary);
+    background: rgba(30, 41, 59, 0.4);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.report-finding.high { border-left-color: var(--danger); }
+.report-finding.med  { border-left-color: var(--warning); }
+.report-finding.low  { border-left-color: var(--info); }
+
+/* ==========================================================================
+   Inputs & Controls
+   ========================================================================== */
+.stTextInput input,
+.stSelectbox div[data-baseweb="select"],
+.stNumberInput input {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: var(--text-200) !important;
+    border-radius: var(--radius-sm) !important;
+}
+.stSlider [data-baseweb="slider"] [role="slider"] {
+    background: var(--primary) !important;
+}
+
+/* File uploader */
+[data-testid="stFileUploader"] {
+    border: 2px dashed rgba(99, 102, 241, 0.25) !important;
+    border-radius: var(--radius-lg) !important;
+    background: rgba(99, 102, 241, 0.03) !important;
+    transition: var(--transition);
+}
+[data-testid="stFileUploader"]:hover {
+    border-color: rgba(99, 102, 241, 0.5) !important;
+    background: rgba(99, 102, 241, 0.06) !important;
+}
+
+/* Expander */
+.streamlit-expanderHeader {
+    font-weight: 600 !important;
+    color: var(--text-200) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-radius: var(--radius-sm) !important;
+}
+
+/* Dataframes */
+[data-testid="stDataFrame"] {
+    border: 1px solid var(--glass-border) !important;
+    border-radius: var(--radius-md) !important;
+    overflow: hidden;
+}
+
+/* Progress bar */
+.stProgress > div > div > div {
+    background: linear-gradient(90deg, var(--primary), var(--accent)) !important;
+}
+
+/* Divider */
+hr {
+    border-color: var(--glass-border) !important;
+    opacity: 0.5;
+}
+
+/* ==========================================================================
+   Success / Warning / Error panels
+   ========================================================================== */
+.success-panel {
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    text-align: center;
+}
+.warning-panel {
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    color: var(--text-300);
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.app-footer {
+    text-align: center;
+    padding: 2rem 0 1rem;
+    color: var(--text-500);
+    font-size: 0.82rem;
+    border-top: 1px solid var(--glass-border);
+    margin-top: 3rem;
+}
+.app-footer a { color: var(--primary-light); text-decoration: none; }
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.animate-in { animation: fadeIn 0.4s ease-out; }
+
+/* ==========================================================================
+   Scrollbar
+   ========================================================================== */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg-600); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--bg-500); }
+
+/* Column gap fix */
+[data-testid="stHorizontalBlock"] { gap: 1rem; }
